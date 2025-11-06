@@ -1,40 +1,62 @@
 #include <stdio.h>
-
-// Desafio Batalha Naval - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
-// Siga os comentários para implementar cada parte do desafio.
+#include <stdlib.h>
+#include <time.h>
 
 int main() {
-    // Nível Novato - Posicionamento dos Navios
-    // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
-    // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
-    // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
+    int linha_navio, coluna_navio;  // posição do navio
+    int linha_tiro, coluna_tiro;    // tiro do jogador
+    int tentativas = 0;             // contador de jogadas
+    int acerto = 0;                 // flag de acerto (0 = não acertou, 1 = acertou)
 
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
+    const int TAMANHO = 10;         
 
-    // Nível Mestre - Habilidades Especiais com Matrizes
-    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
-    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
-    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
+    // Gerar posição aleatória do navio (tabuleiro 10x10)
+    srand(time(NULL));
+    linha_navio = rand() % TAMANHO;   
+    coluna_navio = rand() % TAMANHO;  
 
-    // Exemplos de exibição das habilidades:
-    // Exemplo para habilidade em cone:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 1 1 1 1 1
-    
-    // Exemplo para habilidade em octaedro:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 0 0 1 0 0
+    printf("=== ⚓ BATALHA NAVAL ===\n");
+    printf("O tabuleiro é 10x10 (linhas e colunas de 0 a 9)\n");
+    printf("Tente acertar onde o navio está escondido!\n\n");
 
-    // Exemplo para habilidade em cruz:
-    // 0 0 1 0 0
-    // 1 1 1 1 1
-    // 0 0 1 0 0
+    while (acerto == 0) {
+        printf("Digite a linha (0 a 9): ");
+        scanf("%d", &linha_tiro);
+
+        printf("Digite a coluna (0 a 9): ");
+        scanf("%d", &coluna_tiro);
+
+        if (linha_tiro < 0 || linha_tiro >= TAMANHO || coluna_tiro < 0 || coluna_tiro >= TAMANHO) {
+            printf("\n🚫 Posição inválida! Digite números entre 0 e 9.\n\n");
+            continue; 
+        }
+
+        tentativas++;
+
+        // Verifica se o tiro acertou
+        if (linha_tiro == linha_navio && coluna_tiro == coluna_navio) {
+            printf("\n💥 ACERTOU O NAVIO! 💥\n");
+            printf("Você venceu em %d tentativas!\n", tentativas);
+            acerto = 1;
+        } else {
+            printf("\n🌊 Água! O navio não está em (%d, %d).\n", linha_tiro, coluna_tiro);
+
+            // Dicas de direção
+            if (linha_tiro < linha_navio)
+                printf("👉 O navio está mais em BAIXO.\n");
+            else if (linha_tiro > linha_navio)
+                printf("👆 O navio está mais em CIMA.\n");
+
+            if (coluna_tiro < coluna_navio)
+                printf("➡️  O navio está mais à DIREITA.\n");
+            else if (coluna_tiro > coluna_navio)
+                printf("⬅️  O navio está mais à ESQUERDA.\n");
+
+            printf("-----------------------------\n");
+        }
+    }
+
+    printf("\nFim de jogo. Obrigado por jogar!\n");
 
     return 0;
 }
